@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 type item struct {
@@ -87,13 +89,17 @@ func (l *List) Get(filename string) error {
 
 func (l *List) String() string {
 	formatted := ""
-
+	c := color.New()
 	for k, t := range *l {
 		prefix := "    "
 		if t.Done {
 			prefix = "[x] "
+			c.Add(color.FgGreen)
+			formatted += c.Sprintf("%s%d: %s\n", prefix, k+1, t.Task)
+		} else {
+			c.Add(color.FgRed)
+			formatted += c.Sprintf("%s%d: %s\n", prefix, k+1, t.Task)
 		}
-		formatted += fmt.Sprintf("%s%d: %s\n", prefix, k+1, t.Task)
 	}
 	return formatted
 }
